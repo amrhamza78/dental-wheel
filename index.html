@@ -9,22 +9,29 @@
   * { margin: 0; padding: 0; box-sizing: border-box; }
 
   :root {
-    --mint-1: #f0fdf4;
-    --mint-2: #dcfce7;
-    --mint-3: #bbf7d0;
-    --mint-4: #86efac;
-    --mint-5: #4ade80;
-    --sage-1: #ecfdf5;
-    --sage-2: #d1fae5;
     --sage-3: #a7f3d0;
     --sage-4: #6ee7b7;
     --sage-5: #34d399;
     --teal-soft: #5eead4;
     --text-dark: #1e293b;
     --text-soft: #475569;
-    --text-muted: #94a3b8;
-    --bg: #f8fafc;
+    --bg-main: linear-gradient(180deg, #f8fafc 0%, #ecfdf5 50%, #f0fdf4 100%);
+    --card-trans: rgba(255, 255, 255, 0.95);
     --white: #ffffff;
+    --mint-2: #dcfce7;
+    --mint-3: #bbf7d0;
+    --shadow: rgba(52, 211, 153, 0.15);
+  }
+
+  body.dark {
+    --text-dark: #f1f5f9;
+    --text-soft: #cbd5e1;
+    --bg-main: linear-gradient(180deg, #0f172a 0%, #0a1f1c 50%, #0f2a1f 100%);
+    --card-trans: rgba(30, 41, 59, 0.95);
+    --white: #1e293b;
+    --mint-2: #064e3b;
+    --mint-3: #065f46;
+    --shadow: rgba(0, 0, 0, 0.5);
   }
 
   html, body { overflow-x: hidden; }
@@ -32,44 +39,36 @@
   body {
     min-height: 100vh;
     font-family: 'Cairo', sans-serif;
-    background: linear-gradient(180deg, #f8fafc 0%, #ecfdf5 50%, #f0fdf4 100%);
+    background: var(--bg-main);
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: 30px 20px 140px;
+    padding: 100px 20px 140px;
     color: var(--text-dark);
-    position: relative;
+    transition: background 0.4s, color 0.4s;
   }
 
-  /* خلفية ناعمة */
-  body::before {
-    content: '';
+  body.lang-en { font-family: 'Poppins', sans-serif; direction: ltr; }
+
+  /* شريط الأزرار العلوي */
+  .top-bar {
     position: fixed;
-    inset: 0;
-    background: 
-      radial-gradient(circle at 10% 10%, rgba(167, 243, 208, 0.3) 0%, transparent 40%),
-      radial-gradient(circle at 90% 90%, rgba(110, 231, 183, 0.25) 0%, transparent 40%);
-    pointer-events: none;
-    z-index: 0;
+    top: 20px; left: 20px; right: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 100;
   }
 
-  /* ====== زر اللغة ====== */
   .lang-toggle {
-    position: fixed;
-    top: 20px;
-    left: 20px;
     display: flex;
     gap: 4px;
-    background: rgba(255, 255, 255, 0.9);
+    background: var(--card-trans);
     backdrop-filter: blur(15px);
-    -webkit-backdrop-filter: blur(15px);
     border: 1px solid rgba(167, 243, 208, 0.6);
     padding: 5px;
     border-radius: 50px;
-    z-index: 100;
-    box-shadow: 
-      0 4px 20px rgba(52, 211, 153, 0.15),
-      0 1px 3px rgba(0, 0, 0, 0.05);
+    box-shadow: 0 4px 20px var(--shadow);
   }
 
   .lang-btn {
@@ -81,30 +80,36 @@
     font-size: 0.85rem;
     font-weight: 700;
     cursor: pointer;
-    font-family: 'Cairo', 'Poppins', sans-serif;
+    font-family: inherit;
     transition: all 0.3s;
-    letter-spacing: 0.5px;
   }
 
   .lang-btn.active {
     background: linear-gradient(135deg, var(--sage-4), var(--sage-5));
     color: #fff;
-    box-shadow: 
-      0 4px 12px rgba(52, 211, 153, 0.4),
-      inset 0 1px 0 rgba(255, 255, 255, 0.5);
+    box-shadow: 0 4px 12px rgba(52, 211, 153, 0.4);
   }
 
-  .lang-btn:not(.active):hover {
-    color: var(--sage-5);
+  .theme-btn {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background: var(--card-trans);
+    backdrop-filter: blur(15px);
+    border: 1px solid rgba(167, 243, 208, 0.6);
+    cursor: pointer;
+    font-size: 22px;
+    box-shadow: 0 4px 20px var(--shadow);
+    transition: all 0.3s;
   }
 
-  /* ====== الهيدر ====== */
+  .theme-btn:hover { transform: scale(1.1); }
+
+  /* الهيدر */
   .header {
     text-align: center;
     margin-bottom: 25px;
-    position: relative;
     z-index: 2;
-    animation: fadeDown 0.8s ease;
   }
 
   .logo-badge {
@@ -115,32 +120,22 @@
     height: 95px;
     border-radius: 50%;
     background: linear-gradient(135deg, var(--mint-3), var(--sage-4));
-    box-shadow: 
-      0 10px 30px rgba(52, 211, 153, 0.2),
-      0 4px 12px rgba(0, 0, 0, 0.05),
-      inset 0 -3px 8px rgba(52, 211, 153, 0.3),
-      inset 0 3px 8px rgba(255, 255, 255, 0.8);
+    box-shadow: 0 10px 30px rgba(52, 211, 153, 0.2);
     margin-bottom: 20px;
-    position: relative;
-    animation: logoFloat 4s ease-in-out infinite alternate;
+    animation: float 4s ease-in-out infinite alternate;
   }
 
-  @keyframes logoFloat {
+  @keyframes float {
     from { transform: translateY(0); }
     to { transform: translateY(-5px); }
   }
 
-  .logo-badge::after {
-    content: "🦷";
-    font-size: 48px;
-    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
-  }
+  .logo-badge::after { content: "🦷"; font-size: 48px; }
 
   .clinic-name {
     font-size: 2.2rem;
     font-weight: 900;
     color: var(--text-dark);
-    letter-spacing: -0.5px;
     margin-bottom: 6px;
   }
 
@@ -160,41 +155,13 @@
     margin-bottom: 12px;
   }
 
-  .divider {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
-    margin: 12px auto;
-  }
+  body.dark .clinic-sub { color: var(--sage-4); }
 
-  .divider-line {
-    width: 50px;
-    height: 2px;
-    background: linear-gradient(90deg, transparent, var(--sage-4), transparent);
-    border-radius: 2px;
-  }
-
-  .divider-dot {
-    width: 8px;
-    height: 8px;
-    background: var(--sage-4);
-    border-radius: 50%;
-    box-shadow: 0 0 10px rgba(52, 211, 153, 0.5);
-  }
-
-  .tagline {
-    font-size: 1rem;
-    color: var(--text-soft);
-    font-weight: 500;
-    margin-top: 8px;
-  }
+  .tagline { font-size: 1rem; color: var(--text-soft); margin-top: 8px; }
 
   .one-time-badge {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    background: rgba(255, 255, 255, 0.8);
+    display: inline-block;
+    background: var(--card-trans);
     border: 1px solid rgba(167, 243, 208, 0.8);
     color: var(--sage-5);
     padding: 7px 16px;
@@ -202,10 +169,11 @@
     font-size: 0.8rem;
     font-weight: 700;
     margin-top: 12px;
-    box-shadow: 0 2px 10px rgba(52, 211, 153, 0.1);
   }
 
-  /* ====== حاوية العجلة ====== */
+  body.dark .one-time-badge { color: var(--sage-4); }
+
+  /* العجلة */
   .wheel-wrapper {
     position: relative;
     width: 92vw;
@@ -215,23 +183,6 @@
     z-index: 2;
   }
 
-  /* هالة هادئة */
-  .aura {
-    position: absolute;
-    inset: -25px;
-    border-radius: 50%;
-    background: radial-gradient(circle, rgba(167, 243, 208, 0.5) 0%, transparent 70%);
-    filter: blur(25px);
-    animation: auraSoft 4s ease-in-out infinite alternate;
-    z-index: 0;
-  }
-
-  @keyframes auraSoft {
-    from { opacity: 0.6; transform: scale(0.98); }
-    to { opacity: 1; transform: scale(1.02); }
-  }
-
-  /* المؤشر */
   .pointer {
     position: absolute;
     top: -28px;
@@ -245,20 +196,16 @@
 
   .pointer svg { width: 100%; height: 100%; }
 
-  /* جسم العجلة */
   .wheel-ring {
     position: absolute;
     inset: 0;
     border-radius: 50%;
-    background: linear-gradient(135deg, var(--mint-2), var(--sage-2), var(--mint-3));
+    background: linear-gradient(135deg, var(--mint-2), var(--sage-3), var(--mint-3));
     padding: 14px;
     box-shadow: 
-      0 20px 50px rgba(52, 211, 153, 0.2),
-      0 8px 20px rgba(0, 0, 0, 0.06),
-      0 0 0 3px #fff,
-      0 0 0 6px rgba(167, 243, 208, 0.6),
-      inset 0 0 30px rgba(52, 211, 153, 0.1);
-    z-index: 3;
+      0 20px 50px var(--shadow),
+      0 0 0 3px var(--white),
+      0 0 0 6px rgba(167, 243, 208, 0.6);
   }
 
   .wheel-inner {
@@ -268,7 +215,6 @@
     border-radius: 50%;
     overflow: hidden;
     background: #fff;
-    box-shadow: inset 0 0 25px rgba(52, 211, 153, 0.15);
   }
 
   canvas {
@@ -276,68 +222,39 @@
     height: 100%;
     display: block;
     transition: transform 6s cubic-bezier(0.15, 0.9, 0.15, 1);
-    will-change: transform;
   }
 
-  /* ====== زر الدوران ====== */
   .spin-btn {
     position: absolute;
-    top: 50%;
-    left: 50%;
+    top: 50%; left: 50%;
     transform: translate(-50%, -50%);
     width: 26%;
     height: 26%;
     border-radius: 50%;
-    background: linear-gradient(135deg, var(--sage-4) 0%, var(--sage-5) 100%);
+    background: linear-gradient(135deg, var(--sage-4), var(--sage-5));
     color: #fff;
     border: 5px solid #fff;
     font-size: 1rem;
     font-weight: 900;
     cursor: pointer;
     z-index: 8;
-    box-shadow: 
-      0 8px 25px rgba(52, 211, 153, 0.4),
-      0 3px 10px rgba(0, 0, 0, 0.1),
-      inset 0 -3px 8px rgba(5, 150, 105, 0.3),
-      inset 0 3px 8px rgba(255, 255, 255, 0.4);
-    transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-    font-family: 'Cairo', 'Poppins', sans-serif;
-    letter-spacing: 0.5px;
-    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.15);
+    box-shadow: 0 8px 25px rgba(52, 211, 153, 0.4);
+    transition: all 0.3s;
+    font-family: inherit;
   }
 
-  .spin-btn:hover:not(:disabled) { 
-    transform: translate(-50%, -50%) scale(1.08);
-    box-shadow: 
-      0 12px 35px rgba(52, 211, 153, 0.5),
-      0 4px 15px rgba(0, 0, 0, 0.1),
-      inset 0 -3px 8px rgba(5, 150, 105, 0.3),
-      inset 0 3px 8px rgba(255, 255, 255, 0.4);
-  }
+  .spin-btn:hover:not(:disabled) { transform: translate(-50%, -50%) scale(1.08); }
+  .spin-btn:active:not(:disabled) { transform: translate(-50%, -50%) scale(0.95); }
+  .spin-btn:disabled { opacity: 0.6; cursor: not-allowed; }
 
-  .spin-btn:active:not(:disabled) { 
-    transform: translate(-50%, -50%) scale(0.95); 
-  }
-
-  .spin-btn:disabled { 
-    opacity: 0.6; 
-    cursor: not-allowed;
-    background: linear-gradient(135deg, #cbd5e1 0%, #94a3b8 100%);
-    box-shadow: none;
-  }
-
-  /* ====== بطاقة النتيجة ====== */
+  /* بطاقة النتيجة */
   .result-card {
-    background: rgba(255, 255, 255, 0.95);
+    background: var(--card-trans);
     backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
     border: 1px solid rgba(167, 243, 208, 0.6);
     padding: 25px 45px;
     border-radius: 22px;
-    box-shadow: 
-      0 15px 40px rgba(52, 211, 153, 0.15),
-      0 4px 12px rgba(0, 0, 0, 0.05),
-      inset 0 1px 0 rgba(255, 255, 255, 0.8);
+    box-shadow: 0 15px 40px var(--shadow);
     text-align: center;
     min-width: 320px;
     max-width: 92vw;
@@ -352,7 +269,6 @@
     top: 0; left: 0; right: 0;
     height: 3px;
     background: linear-gradient(90deg, transparent, var(--sage-4), var(--teal-soft), var(--sage-4), transparent);
-    border-radius: 22px 22px 0 0;
   }
 
   .result-label {
@@ -364,6 +280,8 @@
     text-transform: uppercase;
   }
 
+  body.dark .result-label { color: var(--sage-4); }
+
   .prize-text {
     font-size: 2rem;
     font-weight: 900;
@@ -371,11 +289,8 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    line-height: 1.3;
     color: var(--text-dark);
   }
-
-  .prize-text.pop { animation: popIn 0.7s cubic-bezier(0.34, 1.56, 0.64, 1); }
 
   .prize-text.win {
     background: linear-gradient(135deg, var(--sage-5), var(--teal-soft));
@@ -385,42 +300,33 @@
   }
 
   .prize-text.lose { color: #94a3b8; font-size: 1.6rem; }
+  .prize-text.pop { animation: pop 0.7s cubic-bezier(0.34, 1.56, 0.64, 1); }
 
-  @keyframes popIn {
+  @keyframes pop {
     0% { transform: scale(0.4); opacity: 0; }
     60% { transform: scale(1.12); }
     100% { transform: scale(1); opacity: 1; }
   }
 
-  @keyframes fadeDown {
-    from { opacity: 0; transform: translateY(-20px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-
-  /* ====== الفوتر ====== */
+  /* الفوتر */
   .footer {
     margin-top: 40px;
     text-align: center;
-    font-size: 0.95rem;
     color: var(--text-soft);
-    line-height: 2;
-    position: relative;
     z-index: 2;
   }
 
-  .footer strong { 
-    color: var(--sage-5);
-    font-weight: 900;
-  }
+  .footer strong { color: var(--sage-5); font-weight: 900; }
+  body.dark .footer strong { color: var(--sage-4); }
 
   .phone-label {
     font-size: 0.9rem;
     color: var(--sage-5);
     font-weight: 700;
-    letter-spacing: 1px;
-    margin-bottom: 6px;
-    margin-top: 10px;
+    margin: 10px 0 6px;
   }
+
+  body.dark .phone-label { color: var(--sage-4); }
 
   .phone-link {
     display: inline-flex;
@@ -434,31 +340,45 @@
     border-radius: 50px;
     font-weight: 900;
     font-size: 1.15rem;
-    letter-spacing: 0.5px;
-    box-shadow: 
-      0 8px 25px rgba(52, 211, 153, 0.35),
-      inset 0 1px 0 rgba(255, 255, 255, 0.3);
+    box-shadow: 0 8px 25px rgba(52, 211, 153, 0.35);
     transition: all 0.3s;
     direction: ltr;
     border: 1px solid rgba(255, 255, 255, 0.4);
   }
 
-  .phone-link:hover {
-    transform: translateY(-3px);
-    box-shadow: 
-      0 12px 35px rgba(52, 211, 153, 0.5),
-      inset 0 1px 0 rgba(255, 255, 255, 0.3);
-  }
-
+  .phone-link:hover { transform: translateY(-3px); }
   .phone-link svg { width: 20px; height: 20px; }
 
-  /* ====== المودال ====== */
+  /* الأزرار العائمة */
+  .fab {
+    position: fixed;
+    bottom: 25px;
+    width: 62px;
+    height: 62px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 8px 25px rgba(52, 211, 153, 0.4);
+    z-index: 50;
+    transition: transform 0.3s;
+    text-decoration: none;
+    border: 2px solid #fff;
+  }
+
+  .fab:hover { transform: scale(1.1); }
+
+  .call-fab { left: 25px; background: linear-gradient(135deg, var(--sage-4), var(--sage-5)); }
+  .call-fab svg { width: 26px; height: 26px; }
+  .wa-fab { right: 25px; background: linear-gradient(135deg, #25d366, #128c7e); }
+  .wa-fab svg { width: 30px; height: 30px; }
+
+  /* المودال */
   .modal-overlay {
     position: fixed;
     inset: 0;
-    background: rgba(15, 23, 42, 0.4);
+    background: rgba(15, 23, 42, 0.6);
     backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -472,21 +392,19 @@
   .modal-overlay.show { opacity: 1; pointer-events: auto; }
 
   .modal-box {
-    background: #fff;
+    background: var(--card-trans);
     border-radius: 28px;
     padding: 45px 38px;
     text-align: center;
     max-width: 440px;
     width: 100%;
-    box-shadow: 
-      0 30px 80px rgba(0, 0, 0, 0.15),
-      0 10px 30px rgba(52, 211, 153, 0.2),
-      inset 0 1px 0 rgba(255, 255, 255, 0.9);
+    box-shadow: 0 30px 80px rgba(0, 0, 0, 0.2);
     transform: scale(0.85);
     transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
     position: relative;
     overflow: hidden;
     border: 1px solid rgba(167, 243, 208, 0.5);
+    color: var(--text-dark);
   }
 
   .modal-box::before {
@@ -495,7 +413,6 @@
     top: 0; left: 0; right: 0;
     height: 4px;
     background: linear-gradient(90deg, var(--sage-4), var(--teal-soft), var(--sage-4));
-    border-radius: 28px 28px 0 0;
   }
 
   .modal-overlay.show .modal-box { transform: scale(1); }
@@ -503,23 +420,16 @@
   .gift-icon {
     font-size: 75px;
     margin-bottom: 20px;
-    animation: giftBounce 1.5s ease infinite alternate;
+    animation: bounce 1.5s ease infinite alternate;
     display: inline-block;
-    filter: drop-shadow(0 4px 10px rgba(52, 211, 153, 0.3));
   }
 
-  @keyframes giftBounce {
+  @keyframes bounce {
     from { transform: translateY(0) rotate(-4deg); }
     to { transform: translateY(-10px) rotate(4deg); }
   }
 
-  .modal-title {
-    font-size: 1.5rem;
-    color: var(--text-dark);
-    font-weight: 900;
-    margin-bottom: 14px;
-    letter-spacing: 0.5px;
-  }
+  .modal-title { font-size: 1.5rem; font-weight: 900; margin-bottom: 14px; }
 
   .modal-prize {
     font-size: 2.2rem;
@@ -538,13 +448,9 @@
     margin-bottom: 26px;
   }
 
-  .modal-actions {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-  }
+  .modal-actions { display: flex; flex-direction: column; gap: 12px; }
 
-  .modal-call {
+  .modal-btn-primary {
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -557,23 +463,15 @@
     font-size: 1rem;
     font-weight: 900;
     cursor: pointer;
-    font-family: 'Cairo', 'Poppins', sans-serif;
+    font-family: inherit;
     text-decoration: none;
-    box-shadow: 
-      0 8px 25px rgba(52, 211, 153, 0.35),
-      inset 0 1px 0 rgba(255, 255, 255, 0.3);
+    box-shadow: 0 8px 25px rgba(52, 211, 153, 0.35);
     transition: all 0.3s;
-    direction: ltr;
   }
 
-  .modal-call:hover { 
-    transform: translateY(-2px); 
-    box-shadow: 
-      0 12px 35px rgba(52, 211, 153, 0.5),
-      inset 0 1px 0 rgba(255, 255, 255, 0.3);
-  }
+  .modal-btn-primary:hover { transform: translateY(-2px); }
 
-  .modal-close {
+  .modal-btn-secondary {
     background: transparent;
     color: var(--text-soft);
     border: 2px solid rgba(167, 243, 208, 0.8);
@@ -582,73 +480,56 @@
     font-size: 0.95rem;
     font-weight: 700;
     cursor: pointer;
-    font-family: 'Cairo', 'Poppins', sans-serif;
+    font-family: inherit;
     transition: all 0.3s;
   }
 
-  .modal-close:hover { 
+  .modal-btn-secondary:hover { 
     background: rgba(167, 243, 208, 0.2); 
-    border-color: var(--sage-4);
     color: var(--sage-5);
   }
 
-  /* ====== أزرار عائمة ====== */
-  .call-fab {
-    position: fixed;
-    bottom: 25px;
-    left: 25px;
-    width: 62px;
-    height: 62px;
-    border-radius: 50%;
-    background: linear-gradient(135deg, var(--sage-4), var(--sage-5));
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    box-shadow: 
-      0 8px 25px rgba(52, 211, 153, 0.4),
-      0 3px 10px rgba(0, 0, 0, 0.08),
-      inset 0 2px 0 rgba(255, 255, 255, 0.3);
-    z-index: 50;
-    transition: transform 0.3s;
-    text-decoration: none;
-    border: 2px solid #fff;
-    animation: fabPulse 2.5s infinite;
+  .password-icon { font-size: 65px; margin-bottom: 18px; display: inline-block; }
+
+  .password-input {
+    width: 100%;
+    padding: 16px 20px;
+    font-size: 1.3rem;
+    font-family: inherit;
+    text-align: center;
+    letter-spacing: 8px;
+    border: 2px solid rgba(167, 243, 208, 0.8);
+    border-radius: 15px;
+    background: var(--card-trans);
+    color: var(--text-dark);
+    margin: 20px 0 10px;
+    outline: none;
+    transition: all 0.3s;
+    direction: ltr;
+    font-weight: 900;
   }
 
-  .call-fab:hover { transform: scale(1.1); }
-  .call-fab svg { width: 26px; height: 26px; }
-
-  @keyframes fabPulse {
-    0%   { box-shadow: 0 8px 25px rgba(52, 211, 153, 0.4), 0 3px 10px rgba(0, 0, 0, 0.08), 0 0 0 0 rgba(52, 211, 153, 0.5); }
-    70%  { box-shadow: 0 8px 25px rgba(52, 211, 153, 0.4), 0 3px 10px rgba(0, 0, 0, 0.08), 0 0 0 18px rgba(52, 211, 153, 0); }
-    100% { box-shadow: 0 8px 25px rgba(52, 211, 153, 0.4), 0 3px 10px rgba(0, 0, 0, 0.08), 0 0 0 0 rgba(52, 211, 153, 0); }
+  .password-input:focus {
+    border-color: var(--sage-4);
+    box-shadow: 0 0 0 4px rgba(52, 211, 153, 0.15);
   }
 
-  .wa-fab {
-    position: fixed;
-    bottom: 25px;
-    right: 25px;
-    width: 62px;
-    height: 62px;
-    border-radius: 50%;
-    background: linear-gradient(135deg, #25d366, #128c7e);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    box-shadow: 
-      0 8px 25px rgba(37, 211, 102, 0.4),
-      0 3px 10px rgba(0, 0, 0, 0.08),
-      inset 0 2px 0 rgba(255, 255, 255, 0.3);
-    z-index: 50;
-    transition: transform 0.3s;
-    text-decoration: none;
-    border: 2px solid #fff;
+  .password-input.error { border-color: #ef4444; animation: shake 0.5s; }
+
+  @keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-10px); }
+    75% { transform: translateX(10px); }
   }
 
-  .wa-fab:hover { transform: scale(1.1); }
-  .wa-fab svg { width: 30px; height: 30px; }
+  .password-error {
+    color: #ef4444;
+    font-size: 0.9rem;
+    font-weight: 700;
+    min-height: 22px;
+    margin-bottom: 15px;
+  }
 
-  /* ====== كونفيتي ناعم ====== */
   .confetti {
     position: fixed;
     width: 8px;
@@ -665,91 +546,47 @@
     }
   }
 
-  /* ====== إنجليزي ====== */
-  body.lang-en {
-    font-family: 'Poppins', sans-serif;
-    direction: ltr;
-  }
-
-  body.lang-en .clinic-name,
-  body.lang-en .modal-title,
-  body.lang-en .modal-prize,
-  body.lang-en .prize-text,
-  body.lang-en .spin-btn,
-  body.lang-en .modal-call,
-  body.lang-en .modal-close {
-    font-family: 'Poppins', sans-serif;
-  }
-
-  body.lang-en .lang-toggle {
-    left: auto;
-    right: 20px;
-  }
-
-  body.lang-en .phone-link,
-  body.lang-en .modal-call {
-    direction: ltr;
-  }
-
-  /* استجابة */
   @media (max-width: 480px) {
+    body { padding: 90px 15px 130px; }
     .clinic-name { font-size: 1.7rem; }
-    .clinic-sub { letter-spacing: 4px; font-size: 0.7rem; }
-    .logo-badge { width: 80px; height: 80px; }
-    .logo-badge::after { font-size: 40px; }
     .prize-text { font-size: 1.6rem; }
-    .spin-btn { font-size: 0.85rem; }
     .modal-prize { font-size: 1.8rem; }
     .gift-icon { font-size: 60px; }
-    .call-fab, .wa-fab { width: 56px; height: 56px; }
-    .call-fab svg { width: 22px; height: 22px; }
+    .fab { width: 56px; height: 56px; }
+    .fab svg { width: 22px; height: 22px; }
     .wa-fab svg { width: 26px; height: 26px; }
-    .phone-link { font-size: 1rem; padding: 12px 24px; }
-    .result-card { padding: 22px 30px; min-width: 280px; }
-    .lang-toggle { top: 15px; left: 15px; }
-    body.lang-en .lang-toggle { left: auto; right: 15px; }
-    .lang-btn { padding: 6px 14px; font-size: 0.75rem; }
   }
 </style>
 </head>
 <body>
 
-  <!-- زر اللغة -->
-  <div class="lang-toggle">
-    <button class="lang-btn active" id="btnAr" onclick="setLang('ar')">العربية</button>
-    <button class="lang-btn" id="btnEn" onclick="setLang('en')">English</button>
+  <div class="top-bar">
+    <div class="lang-toggle">
+      <button class="lang-btn active" id="btnAr">العربية</button>
+      <button class="lang-btn" id="btnEn">EN</button>
+    </div>
+    <button class="theme-btn" id="themeBtn">🌙</button>
   </div>
 
-  <!-- الهيدر -->
   <header class="header">
     <div class="logo-badge"></div>
-    <h1 class="clinic-name" data-ar="د. سعيد الصباغ" data-en="Dr. Saeed Elsabbagh">د. <span>سعيد الصباغ</span></h1>
+    <h1 class="clinic-name">د. <span id="docName">سعيد الصباغ</span></h1>
     <div class="clinic-sub">Dental Clinic</div>
-    <div class="divider">
-      <div class="divider-line"></div>
-      <div class="divider-dot"></div>
-      <div class="divider-line"></div>
-    </div>
-    <p class="tagline" data-ar="🌿 أدر العجلة واربح هديتك 🌿" data-en="🌿 Spin the wheel and win your prize 🌿">🌿 أدر العجلة واربح هديتك 🌿</p>
-    <div class="one-time-badge" data-ar="⚠️ محاولة واحدة فقط لكل زائر" data-en="⚠️ One try only per visitor">⚠️ محاولة واحدة فقط لكل زائر</div>
+    <p class="tagline" id="tagline">🌿 أدر العجلة واربح هديتك 🌿</p>
+    <div class="one-time-badge" id="oneTimeBadge">⚠️ محاولة واحدة فقط لكل زائر</div>
   </header>
 
-  <!-- العجلة -->
   <div class="wheel-wrapper">
-    <div class="aura"></div>
-
     <div class="pointer">
       <svg viewBox="0 0 46 60" xmlns="http://www.w3.org/2000/svg">
         <defs>
           <linearGradient id="ptrGrad" x1="0" y1="0" x2="0" y2="1">
             <stop offset="0%" stop-color="#86efac"/>
-            <stop offset="50%" stop-color="#4ade80"/>
             <stop offset="100%" stop-color="#34d399"/>
           </linearGradient>
         </defs>
         <path d="M23 58 L3 14 Q23 -6 43 14 Z" fill="url(#ptrGrad)" stroke="#fff" stroke-width="2.5" stroke-linejoin="round"/>
         <circle cx="23" cy="20" r="6" fill="#fff"/>
-        <circle cx="21" cy="18" r="2" fill="#bbf7d0"/>
       </svg>
     </div>
 
@@ -759,19 +596,17 @@
       </div>
     </div>
 
-    <button class="spin-btn" id="spinBtn" data-ar="أدر العجلة" data-en="SPIN!">أدر العجلة</button>
+    <button class="spin-btn" id="spinBtn">أدر العجلة</button>
   </div>
 
-  <!-- النتيجة -->
   <div class="result-card">
-    <div class="result-label" data-ar="النتيجة" data-en="RESULT">النتيجة</div>
-    <div class="prize-text" id="prizeText" data-ar="— اضغط أدر العجلة —" data-en="— Press SPIN —">— اضغط أدر العجلة —</div>
+    <div class="result-label" id="resultLabel">النتيجة</div>
+    <div class="prize-text" id="prizeText">— اضغط أدر العجلة —</div>
   </div>
 
-  <!-- الفوتر -->
   <footer class="footer">
-    <div><strong data-ar="عيادة د. سعيد الصباغ" data-en="Dr. Saeed Elsabbagh Clinic">عيادة د. سعيد الصباغ</strong> <span data-ar="لطب وتجميل الأسنان" data-en="Dental & Cosmetic Care">لطب وتجميل الأسنان</span></div>
-    <div class="phone-label" data-ar="📞 للتواصل وللحجز" data-en="📞 Contact & Booking">📞 للتواصل وللحجز</div>
+    <div><strong>عيادة د. سعيد الصباغ</strong> لطب وتجميل الأسنان</div>
+    <div class="phone-label" id="phoneLabel">📞 للتواصل وللحجز</div>
     <a href="tel:01037937077" class="phone-link">
       <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" 
@@ -781,206 +616,247 @@
     </a>
   </footer>
 
-  <!-- زر الاتصال العائم -->
-  <a href="tel:01037937077" class="call-fab" aria-label="Call">
+  <a href="tel:01037937077" class="fab call-fab">
     <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
       <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" 
             stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
     </svg>
   </a>
 
-  <!-- زر واتساب العائم -->
-  <a href="https://wa.me/201037937077" class="wa-fab" target="_blank" aria-label="WhatsApp">
+  <a href="https://wa.me/201037937077?text=مرحباً%20د.%20سعيد،%20أريد%20حجز%20موعد" 
+     target="_blank" class="fab wa-fab">
     <svg viewBox="0 0 24 24" fill="#fff" xmlns="http://www.w3.org/2000/svg">
       <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.71.306 1.263.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
     </svg>
   </a>
 
-  <!-- المودال -->
-  <div class="modal-overlay" id="modal">
+  <!-- مودال الجائزة -->
+  <div class="modal-overlay" id="prizeModal">
     <div class="modal-box">
       <div class="gift-icon" id="modalIcon">🎁</div>
-      <h2 class="modal-title" id="modalTitle" data-ar="مبروك!" data-en="Congratulations!">مبروك!</h2>
+      <h2 class="modal-title" id="modalTitle">مبروك!</h2>
       <div class="modal-prize" id="modalPrize">—</div>
       <p class="modal-note" id="modalNote"></p>
       <div class="modal-actions">
-        <a href="tel:01037937077" class="modal-call">
-          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" 
-                  stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+        <a href="https://wa.me/201037937077?text=مرحباً%20د.%20سعيد،%20فزت%20بهدية%20من%20العجلة" 
+           target="_blank" class="modal-btn-primary">
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="#fff" xmlns="http://www.w3.org/2000/svg">
+            <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.71.306 1.263.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
           </svg>
-          <span data-ar="اتصل للحجز: 01037937077" data-en="Call: 01037937077">اتصل للحجز: 01037937077</span>
+          <span id="waBookText">احجز عبر واتساب</span>
         </a>
-        <button class="modal-close" onclick="closeModal()" data-ar="إغلاق" data-en="Close">إغلاق</button>
+        <button class="modal-btn-secondary" id="closePrizeBtn">إغلاق</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- مودال الباسورد -->
+  <div class="modal-overlay" id="passModal">
+    <div class="modal-box">
+      <div class="password-icon">🔒</div>
+      <h2 class="modal-title" id="passTitle">كلمة المرور مطلوبة</h2>
+      <p class="modal-note" id="passNote">لقد لعبت من قبل. اكتب كلمة المرور للعب مرة أخرى.</p>
+      <input type="password" class="password-input" id="passInput" placeholder="• • • • • • • •" maxlength="10" inputmode="numeric">
+      <div class="password-error" id="passError"></div>
+      <div class="modal-actions">
+        <button class="modal-btn-primary" id="passSubmit">تأكيد</button>
+        <button class="modal-btn-secondary" id="passCancel">إلغاء</button>
       </div>
     </div>
   </div>
 
 <script>
-  // ============================================
-  // 🌐 ترجمات
-  // ============================================
-  let currentLang = 'ar';
+(function() {
+  'use strict';
 
-  const translations = {
+  // ============ الإعدادات ============
+  const PASSWORD = '11223344';
+  const STORAGE_KEY = 'dr_saeed_wheel_played_v4';
+  const THEME_KEY = 'dr_saeed_theme_v4';
+  const LANG_KEY = 'dr_saeed_lang_v4';
+
+  // ============ الترجمات ============
+  const T = {
     ar: {
-      prizes: [
-        { text: "حظ أوفر",    win: false },
-        { text: "كشف مجاني",  win: true  },
-        { text: "خصم 10%",   win: true  },
-        { text: "هدية صغيرة", win: true  },
-        { text: "حظ أوفر",    win: false },
-        { text: "كشف مجاني",  win: true  },
-        { text: "خصم 10%",   win: true  },
-        { text: "هدية صغيرة", win: true  }
-      ],
-      wonTitle: "مبروك! هديتك",
-      wonNote: "تم تسجيل هديتك بنجاح. تفضل بالاتصال بنا لحجز موعدك واستلام الهدية من العيادة.",
-      loseTitle: "حظ أوفر",
-      loseNote: "لا تقلق، صحة أسنانك أهم من أي جائزة. تفضل بزيارتنا للاستفادة من خدماتنا 💙",
-      spinning: "🎲 جاري الدوران...",
-      alreadyPlayed: "لعبت ✓",
-      yourLuck: "🎁 حظك كان: "
+      docName: 'سعيد الصباغ',
+      tagline: '🌿 أدر العجلة واربح هديتك 🌿',
+      oneTime: '⚠️ محاولة واحدة فقط لكل زائر',
+      resultLabel: 'النتيجة',
+      pressSpin: '— اضغط أدر العجلة —',
+      spinBtn: 'أدر العجلة',
+      playAgain: '🔒 العب مرة أخرى',
+      spinning: '🎲 جاري الدوران...',
+      yourLuck: '🎁 حظك كان: ',
+      phoneLabel: '📞 للتواصل وللحجز',
+      prizes: ['حظ أوفر', 'كشف مجاني', 'خصم 10%', 'هدية صغيرة', 'حظ أوفر', 'كشف مجاني', 'خصم 10%', 'هدية صغيرة'],
+      wonTitle: 'مبروك! هديتك',
+      wonNote: 'تم تسجيل هديتك. تواصل معنا عبر واتساب لاستلام الهدية.',
+      loseTitle: 'حظ أوفر',
+      loseNote: 'صحة أسنانك أهم من أي جائزة. تفضل بزيارتنا 💙',
+      waBook: 'احجز عبر واتساب',
+      closeBtn: 'إغلاق',
+      passTitle: 'كلمة المرور مطلوبة',
+      passNote: 'لقد لعبت من قبل. اكتب كلمة المرور للعب مرة أخرى.',
+      passSubmit: 'تأكيد',
+      passCancel: 'إلغاء',
+      wrongPass: '❌ كلمة المرور غير صحيحة',
+      correctPass: '✅ تم التحقق! جاري الدوران...'
     },
     en: {
-      prizes: [
-        { text: "Try Again",   win: false },
-        { text: "Free Exam",   win: true  },
-        { text: "10% OFF",    win: true  },
-        { text: "Small Gift",  win: true  },
-        { text: "Try Again",   win: false },
-        { text: "Free Exam",   win: true  },
-        { text: "10% OFF",    win: true  },
-        { text: "Small Gift",  win: true  }
-      ],
-      wonTitle: "Congrats! Your Prize",
-      wonNote: "Your prize has been recorded. Please call us to book your appointment and claim your gift at the clinic.",
-      loseTitle: "Better Luck Next Time",
-      loseNote: "Don't worry, your dental health matters most. Visit us to benefit from our services 💙",
-      spinning: "🎲 Spinning...",
-      alreadyPlayed: "Played ✓",
-      yourLuck: "🎁 Your luck: "
+      docName: 'Saeed Elsabbagh',
+      tagline: '🌿 Spin the wheel and win 🌿',
+      oneTime: '⚠️ One try only per visitor',
+      resultLabel: 'RESULT',
+      pressSpin: '— Press SPIN —',
+      spinBtn: 'SPIN!',
+      playAgain: '🔒 Play Again',
+      spinning: '🎲 Spinning...',
+      yourLuck: '🎁 Your luck: ',
+      phoneLabel: '📞 Contact & Booking',
+      prizes: ['Try Again', 'Free Exam', '10% OFF', 'Small Gift', 'Try Again', 'Free Exam', '10% OFF', 'Small Gift'],
+      wonTitle: 'Congratulations!',
+      wonNote: 'Your prize has been recorded. Contact us on WhatsApp to claim it.',
+      loseTitle: 'Better Luck Next Time',
+      loseNote: 'Your dental health matters most. Visit us 💙',
+      waBook: 'Book via WhatsApp',
+      closeBtn: 'Close',
+      passTitle: 'Password Required',
+      passNote: 'You played before. Enter the password to play again.',
+      passSubmit: 'Confirm',
+      passCancel: 'Cancel',
+      wrongPass: '❌ Wrong password',
+      correctPass: '✅ Verified! Spinning...'
     }
   };
 
-  // ============================================
-  // 🎨 ألوان القطاعات (Pastel ناعمة)
-  // ============================================
-  const prizeColors = [
-    { color: "#f1f5f9", textColor: "#94a3b8", border: "#e2e8f0", win: false },  // حظ أوفر - رمادي فاتح
-    { color: "#a7f3d0", textColor: "#065f46", border: "#6ee7b7", win: true  },  // كشف مجاني - نعناعي
-    { color: "#86efac", textColor: "#065f46", border: "#4ade80", win: true  },  // خصم 10% - أخضر فاتح
-    { color: "#5eead4", textColor: "#134e4a", border: "#2dd4bf", win: true  },  // هدية - فيروزي فاتح
-    { color: "#f1f5f9", textColor: "#94a3b8", border: "#e2e8f0", win: false },  // حظ أوفر
-    { color: "#a7f3d0", textColor: "#065f46", border: "#6ee7b7", win: true  },  // كشف مجاني
-    { color: "#86efac", textColor: "#065f46", border: "#4ade80", win: true  },  // خصم 10%
-    { color: "#5eead4", textColor: "#134e4a", border: "#2dd4bf", win: true  }   // هدية
+  // ============ ألوان القطاعات ============
+  const COLORS = [
+    { color: '#f1f5f9', textColor: '#94a3b8', border: '#e2e8f0', win: false },
+    { color: '#a7f3d0', textColor: '#065f46', border: '#6ee7b7', win: true  },
+    { color: '#86efac', textColor: '#065f46', border: '#4ade80', win: true  },
+    { color: '#5eead4', textColor: '#134e4a', border: '#2dd4bf', win: true  },
+    { color: '#f1f5f9', textColor: '#94a3b8', border: '#e2e8f0', win: false },
+    { color: '#a7f3d0', textColor: '#065f46', border: '#6ee7b7', win: true  },
+    { color: '#86efac', textColor: '#065f46', border: '#4ade80', win: true  },
+    { color: '#5eead4', textColor: '#134e4a', border: '#2dd4bf', win: true  }
   ];
 
-  function getPrizes() {
-    return translations[currentLang].prizes.map((p, i) => ({
-      ...p,
-      ...prizeColors[i]
-    }));
-  }
+  // ============ الحالة ============
+  let currentLang = 'ar';
+  let rotation = 0;
+  let spinning = false;
+  let hasPlayed = false;
+  let lastPrizeIndex = -1;
+  const N = 8;
+  const arc = (2 * Math.PI) / N;
 
-  // ============================================
-  // عناصر DOM
-  // ============================================
+  // ============ عناصر DOM ============
   const canvas = document.getElementById('wheel');
   const ctx = canvas.getContext('2d');
   const spinBtn = document.getElementById('spinBtn');
   const prizeText = document.getElementById('prizeText');
-  const modal = document.getElementById('modal');
+  const prizeModal = document.getElementById('prizeModal');
+  const passModal = document.getElementById('passModal');
+  const passInput = document.getElementById('passInput');
+  const passError = document.getElementById('passError');
 
-  const N = 8;
-  const arc = (2 * Math.PI) / N;
-  let rotation = 0;
-  let spinning = false;
-  let hasPlayed = false;
-  let prizes = getPrizes();
+  // ============ الوضع الداكن ============
+  function initTheme() {
+    let saved = null;
+    try { saved = localStorage.getItem(THEME_KEY); } catch(e) {}
+    if (saved === 'dark') {
+      document.body.classList.add('dark');
+      document.getElementById('themeBtn').textContent = '☀️';
+    }
+  }
 
-  const STORAGE_KEY = 'dr_saeed_wheel_played_v2';
+  document.getElementById('themeBtn').addEventListener('click', function() {
+    document.body.classList.toggle('dark');
+    const isDark = document.body.classList.contains('dark');
+    this.textContent = isDark ? '☀️' : '🌙';
+    try { localStorage.setItem(THEME_KEY, isDark ? 'dark' : 'light'); } catch(e) {}
+  });
 
-  // ============================================
-  // 🌐 تغيير اللغة
-  // ============================================
+  // ============ اللغة ============
   function setLang(lang) {
     currentLang = lang;
     document.documentElement.lang = lang;
     document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
-    
-    if (lang === 'en') {
-      document.body.classList.add('lang-en');
-    } else {
-      document.body.classList.remove('lang-en');
-    }
+    document.body.classList.toggle('lang-en', lang === 'en');
 
     document.getElementById('btnAr').classList.toggle('active', lang === 'ar');
     document.getElementById('btnEn').classList.toggle('active', lang === 'en');
 
-    document.querySelectorAll('[data-ar][data-en]').forEach(el => {
-      el.textContent = el.getAttribute('data-' + lang);
-    });
+    const t = T[lang];
+    document.getElementById('docName').textContent = t.docName;
+    document.getElementById('tagline').textContent = t.tagline;
+    document.getElementById('oneTimeBadge').textContent = t.oneTime;
+    document.getElementById('resultLabel').textContent = t.resultLabel;
+    document.getElementById('phoneLabel').textContent = t.phoneLabel;
+    document.getElementById('waBookText').textContent = t.waBook;
+    document.getElementById('closePrizeBtn').textContent = t.closeBtn;
+    document.getElementById('passTitle').textContent = t.passTitle;
+    document.getElementById('passNote').textContent = t.passNote;
+    document.getElementById('passSubmit').textContent = t.passSubmit;
+    document.getElementById('passCancel').textContent = t.passCancel;
 
-    if (hasPlayed) {
-      const saved = localStorage.getItem(STORAGE_KEY);
-      if (saved) {
-        const arPrizes = translations.ar.prizes.map(p => p.text);
-        const enPrizes = translations.en.prizes.map(p => p.text);
-        const idx = arPrizes.indexOf(saved) !== -1 ? arPrizes.indexOf(saved) : enPrizes.indexOf(saved);
-        if (idx !== -1) {
-          prizeText.textContent = translations[lang].yourLuck + translations[lang].prizes[idx].text;
-        }
-      }
+    if (hasPlayed && lastPrizeIndex >= 0) {
+      spinBtn.textContent = t.playAgain;
+      prizeText.textContent = t.yourLuck + t.prizes[lastPrizeIndex];
+    } else if (!spinning) {
+      spinBtn.textContent = t.spinBtn;
+      if (lastPrizeIndex < 0) prizeText.textContent = t.pressSpin;
     }
 
-    prizes = getPrizes();
+    try { localStorage.setItem(LANG_KEY, lang); } catch(e) {}
+
     drawWheel();
   }
 
-  // ============================================
-  // التحقق من اللعب
-  // ============================================
-  function checkIfPlayed() {
+  document.getElementById('btnAr').addEventListener('click', () => setLang('ar'));
+  document.getElementById('btnEn').addEventListener('click', () => setLang('en'));
+
+  // ============ حفظ / قراءة حالة اللعب ============
+  function savePlayed(prizeIndex) {
+    try { localStorage.setItem(STORAGE_KEY, String(prizeIndex)); } catch(e) {}
+  }
+
+  function loadPlayed() {
     try {
-      const played = localStorage.getItem(STORAGE_KEY);
-      if (played) {
-        hasPlayed = true;
-        spinBtn.disabled = true;
-        spinBtn.textContent = translations[currentLang].alreadyPlayed;
-        
-        const arPrizes = translations.ar.prizes.map(p => p.text);
-        const idx = arPrizes.indexOf(played);
-        if (idx !== -1) {
-          prizeText.textContent = translations[currentLang].yourLuck + translations[currentLang].prizes[idx].text;
-          prizeText.classList.add("win");
+      const saved = localStorage.getItem(STORAGE_KEY);
+      if (saved !== null && saved !== undefined) {
+        const idx = parseInt(saved, 10);
+        if (!isNaN(idx) && idx >= 0 && idx < N) {
+          hasPlayed = true;
+          lastPrizeIndex = idx;
+          return true;
         }
       }
     } catch(e) {}
+    return false;
   }
 
-  function markAsPlayed(prizeName) {
-    try {
-      localStorage.setItem(STORAGE_KEY, prizeName);
-      hasPlayed = true;
-    } catch(e) {}
+  // ============ رسم العجلة ============
+  function lighten(color, percent) {
+    const num = parseInt(color.replace('#', ''), 16);
+    const amt = Math.round(2.55 * percent);
+    const R = Math.max(0, Math.min(255, (num >> 16) + amt));
+    const G = Math.max(0, Math.min(255, ((num >> 8) & 0x00FF) + amt));
+    const B = Math.max(0, Math.min(255, (num & 0x0000FF) + amt));
+    return '#' + (0x1000000 + R * 0x10000 + G * 0x100 + B).toString(16).slice(1);
   }
 
-  // ============================================
-  // 🎨 رسم العجلة (هادئ ومريح)
-  // ============================================
   function drawWheel() {
     const size = canvas.width;
     const c = size / 2;
     const r = c - 25;
+    const texts = T[currentLang].prizes;
 
     ctx.clearRect(0, 0, size, size);
 
-    // خلفية بيضاء
     ctx.beginPath();
     ctx.arc(c, c, r + 15, 0, 2 * Math.PI);
-    ctx.fillStyle = "#ffffff";
+    ctx.fillStyle = '#ffffff';
     ctx.fill();
 
     for (let i = 0; i < N; i++) {
@@ -992,158 +868,235 @@
       ctx.arc(c, c, r, start, end);
       ctx.closePath();
 
-      // تدرج ناعم
       const gx = c + Math.cos(start + arc / 2) * r * 0.5;
       const gy = c + Math.sin(start + arc / 2) * r * 0.5;
-      const gradient = ctx.createRadialGradient(c, c, 0, gx, gy, r);
-      gradient.addColorStop(0, lighten(prizes[i].color, 10));
-      gradient.addColorStop(1, prizes[i].color);
-      ctx.fillStyle = gradient;
+      const grad = ctx.createRadialGradient(c, c, 0, gx, gy, r);
+      grad.addColorStop(0, lighten(COLORS[i].color, 10));
+      grad.addColorStop(1, COLORS[i].color);
+      ctx.fillStyle = grad;
       ctx.fill();
 
-      // حدود ناعمة
-      ctx.strokeStyle = "#ffffff";
+      ctx.strokeStyle = '#ffffff';
       ctx.lineWidth = 4;
       ctx.stroke();
 
-      // خط فاصل ناعم
       ctx.beginPath();
       ctx.moveTo(c, c);
       ctx.lineTo(c + Math.cos(start) * r, c + Math.sin(start) * r);
-      ctx.strokeStyle = prizes[i].border;
+      ctx.strokeStyle = COLORS[i].border;
       ctx.lineWidth = 2;
       ctx.stroke();
 
-      // النص
       ctx.save();
       ctx.translate(c, c);
       ctx.rotate(start + arc / 2);
-      ctx.textAlign = "right";
-      ctx.textBaseline = "middle";
-      ctx.fillStyle = prizes[i].textColor;
-      ctx.font = "700 32px " + (currentLang === 'ar' ? "Cairo" : "Poppins") + ", sans-serif";
-      ctx.fillText(prizes[i].text, r - 45, 0);
+      ctx.textAlign = 'right';
+      ctx.textBaseline = 'middle';
+      ctx.fillStyle = COLORS[i].textColor;
+      ctx.font = '700 32px ' + (currentLang === 'ar' ? 'Cairo' : 'Poppins') + ', sans-serif';
+      ctx.fillText(texts[i], r - 45, 0);
       ctx.restore();
     }
 
-    // الحلقة الداخلية (بيضاء ناعمة)
     ctx.beginPath();
     ctx.arc(c, c, r, 0, 2 * Math.PI);
-    ctx.strokeStyle = "#ffffff";
+    ctx.strokeStyle = '#ffffff';
     ctx.lineWidth = 8;
     ctx.stroke();
 
     ctx.beginPath();
     ctx.arc(c, c, r - 6, 0, 2 * Math.PI);
-    ctx.strokeStyle = "#a7f3d0";
+    ctx.strokeStyle = '#a7f3d0';
     ctx.lineWidth = 2;
     ctx.stroke();
 
-    // نقاط ناعمة بين القطاعات
     for (let i = 0; i < N; i++) {
       const angle = i * arc - Math.PI / 2;
       const x = c + Math.cos(angle) * (r - 10);
       const y = c + Math.sin(angle) * (r - 10);
       ctx.beginPath();
       ctx.arc(x, y, 5, 0, 2 * Math.PI);
-      ctx.fillStyle = "#ffffff";
+      ctx.fillStyle = '#ffffff';
       ctx.fill();
-      ctx.strokeStyle = "#a7f3d0";
+      ctx.strokeStyle = '#a7f3d0';
       ctx.lineWidth = 2;
       ctx.stroke();
     }
   }
 
-  function lighten(color, percent) {
-    const num = parseInt(color.replace("#", ""), 16);
-    const amt = Math.round(2.55 * percent);
-    const R = Math.max(0, Math.min(255, (num >> 16) + amt));
-    const G = Math.max(0, Math.min(255, ((num >> 8) & 0x00FF) + amt));
-    const B = Math.max(0, Math.min(255, (num & 0x0000FF) + amt));
-    return "#" + (0x1000000 + R * 0x10000 + G * 0x100 + B).toString(16).slice(1);
-  }
-
   // ============================================
-  // 🎡 الدوران
+  // ✅ الدوران - بطريقة مضمونة 100%
   // ============================================
-  function spin() {
-    if (spinning || hasPlayed) return;
+  function doSpin() {
+    if (spinning) return;
     spinning = true;
     spinBtn.disabled = true;
-    spinBtn.textContent = "...";
-    prizeText.textContent = translations[currentLang].spinning;
-    prizeText.classList.remove("pop", "win", "lose");
+    spinBtn.textContent = '...';
+    prizeText.textContent = T[currentLang].spinning;
+    prizeText.classList.remove('pop', 'win', 'lose');
 
+    // ⭐ نختار الجائزة أولاً (عشوائي)
+    const targetIndex = Math.floor(Math.random() * N);
+
+    // ⭐ نحسب الزاوية اللي توصّل المؤشر على القطاع المختار
+    // المؤشر فوق (-PI/2 في نظام العجلة)
+    // القطاع targetIndex يمتد من (targetIndex * arc - PI/2) إلى ((targetIndex+1) * arc - PI/2)
+    // مركز القطاع = targetIndex * arc + arc/2 - PI/2
+    // عايزين الدوران rotation بحيث:
+    // (rotation + centerAngle) mod 2PI = -PI/2 (المؤشر)
+
+    const centerAngle = targetIndex * arc + arc / 2 - Math.PI / 2;
+    
+    // الزاوية المطلوبة:
+    let targetRotation = -Math.PI / 2 - centerAngle;
+    
+    // نضيف لفات كاملة عشان الدوران يكون طويل
     const extraSpins = 7 + Math.floor(Math.random() * 3);
-    const randomAngle = Math.random() * 2 * Math.PI;
-    const total = extraSpins * 2 * Math.PI + randomAngle;
+    targetRotation = targetRotation + extraSpins * 2 * Math.PI;
+    
+    // ضمان إن الدوران دايماً للأمام (أكبر من الدوران الحالي)
+    while (targetRotation <= rotation) {
+      targetRotation += 2 * Math.PI;
+    }
+    
+    // إضافة عشوائية بسيطة عشان مايكونش في مركز القطاع بالظبط (يبان طبيعي)
+    const jitter = (Math.random() - 0.5) * (arc * 0.6);
+    targetRotation += jitter;
 
-    rotation += total;
-    canvas.style.transform = `rotate(${rotation}rad)`;
+    rotation = targetRotation;
+    canvas.style.transform = 'rotate(' + rotation + 'rad)';
 
-    setTimeout(() => {
-      const normalized = ((rotation % (2 * Math.PI)) + 2 * Math.PI) % (2 * Math.PI);
-      const pointerAngle = (2 * Math.PI - normalized + Math.PI / 2) % (2 * Math.PI);
-      const idx = Math.floor(pointerAngle / arc) % N;
-      const prize = prizes[idx];
+    setTimeout(function() {
+      // ⭐ النتيجة = القطاع اللي اخترناه
+      lastPrizeIndex = targetIndex;
+      const prizeName = T[currentLang].prizes[targetIndex];
+      const isWin = COLORS[targetIndex].win;
 
-      prizeText.textContent = prize.text;
-      prizeText.classList.add("pop");
-      prizeText.classList.add(prize.win ? "win" : "lose");
+      // ✅ عرض النتيجة في بطاقة النتيجة (نفس اللي العجلة وقفت عليه بالظبط)
+      prizeText.textContent = prizeName;
+      prizeText.classList.add('pop');
+      prizeText.classList.add(isWin ? 'win' : 'lose');
 
-      markAsPlayed(translations.ar.prizes[idx].text);
+      hasPlayed = true;
+      savePlayed(targetIndex);
 
-      if (prize.win) {
-        showGiftModal(prize.text);
+      if (isWin) {
+        showPrizeModal(prizeName);
         playWinSound();
         launchConfetti();
       } else {
         showLoseModal();
       }
 
-      spinBtn.textContent = translations[currentLang].alreadyPlayed;
-      spinBtn.disabled = true;
+      spinBtn.textContent = T[currentLang].playAgain;
+      spinBtn.disabled = false;
       spinning = false;
     }, 6300);
   }
 
-  // ============================================
-  // 🎁 المودال
-  // ============================================
-  function showGiftModal(prizeName) {
-    document.getElementById('modalIcon').textContent = "🎁";
-    document.getElementById('modalTitle').textContent = translations[currentLang].wonTitle;
+  // ============ زر الدوران ============
+  spinBtn.addEventListener('click', function() {
+    if (spinning) return;
+    if (hasPlayed) {
+      openPassModal();
+      return;
+    }
+    doSpin();
+  });
+
+  // ============ مودال الجائزة ============
+  function showPrizeModal(prizeName) {
+    document.getElementById('modalIcon').textContent = '🎁';
+    document.getElementById('modalTitle').textContent = T[currentLang].wonTitle;
     document.getElementById('modalPrize').textContent = prizeName;
-    document.getElementById('modalNote').textContent = translations[currentLang].wonNote;
-    modal.classList.add('show');
+    document.getElementById('modalNote').textContent = T[currentLang].wonNote;
+    prizeModal.classList.add('show');
   }
 
   function showLoseModal() {
-    document.getElementById('modalIcon').textContent = "🌿";
-    document.getElementById('modalTitle').textContent = translations[currentLang].loseTitle;
-    document.getElementById('modalPrize').textContent = "—";
-    document.getElementById('modalNote').textContent = translations[currentLang].loseNote;
-    modal.classList.add('show');
+    document.getElementById('modalIcon').textContent = '🌿';
+    document.getElementById('modalTitle').textContent = T[currentLang].loseTitle;
+    document.getElementById('modalPrize').textContent = '—';
+    document.getElementById('modalNote').textContent = T[currentLang].loseNote;
+    prizeModal.classList.add('show');
   }
 
-  function closeModal() { modal.classList.remove('show'); }
+  function closePrizeModal() { prizeModal.classList.remove('show'); }
 
-  // ============================================
-  // 🔊 صوت الفوز
-  // ============================================
+  document.getElementById('closePrizeBtn').addEventListener('click', closePrizeModal);
+  prizeModal.addEventListener('click', function(e) {
+    if (e.target === prizeModal) closePrizeModal();
+  });
+
+  // ============ مودال الباسورد ============
+  function openPassModal() {
+    passInput.value = '';
+    passError.textContent = '';
+    passInput.classList.remove('error');
+    passModal.classList.add('show');
+    setTimeout(function() { passInput.focus(); }, 400);
+  }
+
+  function closePassModal() {
+    passModal.classList.remove('show');
+    passInput.value = '';
+    passError.textContent = '';
+    passInput.classList.remove('error');
+  }
+
+  function checkPassword() {
+    const entered = passInput.value.trim();
+    
+    if (entered === PASSWORD) {
+      passError.textContent = T[currentLang].correctPass;
+      passError.style.color = '#10b981';
+      
+      setTimeout(function() {
+        closePassModal();
+        hasPlayed = false;
+        try { localStorage.removeItem(STORAGE_KEY); } catch(e) {}
+        doSpin();
+      }, 700);
+    } else {
+      passError.textContent = T[currentLang].wrongPass;
+      passError.style.color = '#ef4444';
+      passInput.classList.add('error');
+      setTimeout(function() { passInput.classList.remove('error'); }, 500);
+    }
+  }
+
+  document.getElementById('passSubmit').addEventListener('click', checkPassword);
+  document.getElementById('passCancel').addEventListener('click', closePassModal);
+
+  passInput.addEventListener('keydown', function(e) {
+    if (e.key === 'Enter') checkPassword();
+  });
+
+  passModal.addEventListener('click', function(e) {
+    if (e.target === passModal) closePassModal();
+  });
+
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') {
+      closePrizeModal();
+      closePassModal();
+    }
+  });
+
+  // ============ الصوت ============
   function playWinSound() {
     try {
-      const AudioCtx = window.AudioContext || window.webkitAudioContext;
-      const ctxAudio = new AudioCtx();
+      const AC = window.AudioContext || window.webkitAudioContext;
+      const ac = new AC();
       const notes = [523.25, 659.25, 783.99, 1046.5];
-      notes.forEach((freq, i) => {
-        const osc = ctxAudio.createOscillator();
-        const gain = ctxAudio.createGain();
+      notes.forEach(function(freq, i) {
+        const osc = ac.createOscillator();
+        const gain = ac.createGain();
         osc.connect(gain);
-        gain.connect(ctxAudio.destination);
+        gain.connect(ac.destination);
         osc.type = 'sine';
         osc.frequency.value = freq;
-        const t = ctxAudio.currentTime + i * 0.13;
+        const t = ac.currentTime + i * 0.13;
         gain.gain.setValueAtTime(0.001, t);
         gain.gain.exponentialRampToValueAtTime(0.2, t + 0.02);
         gain.gain.exponentialRampToValueAtTime(0.001, t + 0.4);
@@ -1153,37 +1106,48 @@
     } catch(e) {}
   }
 
-  // ============================================
-  // 🎊 كونفيتي ناعم
-  // ============================================
+  // ============ كونفيتي ============
   function launchConfetti() {
     const colors = ['#a7f3d0', '#6ee7b7', '#4ade80', '#5eead4', '#ffffff', '#d1fae5'];
     for (let i = 0; i < 80; i++) {
-      const el = document.createElement('div');
-      el.className = 'confetti';
-      el.style.left = Math.random() * 100 + 'vw';
-      el.style.top = '-20px';
-      el.style.background = colors[Math.floor(Math.random() * colors.length)];
-      el.style.width = (6 + Math.random() * 6) + 'px';
-      el.style.height = (6 + Math.random() * 8) + 'px';
-      el.style.borderRadius = Math.random() > 0.5 ? '50%' : '2px';
-      el.style.animationDuration = (3 + Math.random() * 2) + 's';
-      el.style.animationDelay = (Math.random() * 0.5) + 's';
-      el.style.boxShadow = '0 2px 5px rgba(52, 211, 153, 0.3)';
-      document.body.appendChild(el);
-      setTimeout(() => el.remove(), 5500);
+      (function() {
+        const el = document.createElement('div');
+        el.className = 'confetti';
+        el.style.left = Math.random() * 100 + 'vw';
+        el.style.top = '-20px';
+        el.style.background = colors[Math.floor(Math.random() * colors.length)];
+        el.style.width = (6 + Math.random() * 6) + 'px';
+        el.style.height = (6 + Math.random() * 8) + 'px';
+        el.style.borderRadius = Math.random() > 0.5 ? '50%' : '2px';
+        el.style.animationDuration = (3 + Math.random() * 2) + 's';
+        el.style.animationDelay = (Math.random() * 0.5) + 's';
+        document.body.appendChild(el);
+        setTimeout(function() { el.remove(); }, 5500);
+      })();
     }
   }
 
-  // ============================================
-  // 🚀 تشغيل
-  // ============================================
-  drawWheel();
-  checkIfPlayed();
-  spinBtn.addEventListener('click', spin);
+  // ============ التهيئة ============
+  function init() {
+    initTheme();
 
-  modal.addEventListener('click', (e) => { if (e.target === modal) closeModal(); });
-  document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeModal(); });
+    let savedLang = 'ar';
+    try { savedLang = localStorage.getItem(LANG_KEY) || 'ar'; } catch(e) {}
+    if (savedLang !== 'ar' && savedLang !== 'en') savedLang = 'ar';
+
+    drawWheel();
+    const playedBefore = loadPlayed();
+    setLang(savedLang);
+
+    if (playedBefore && lastPrizeIndex >= 0) {
+      spinBtn.textContent = T[savedLang].playAgain;
+      prizeText.textContent = T[savedLang].yourLuck + T[savedLang].prizes[lastPrizeIndex];
+      prizeText.classList.add(COLORS[lastPrizeIndex].win ? 'win' : 'lose');
+    }
+  }
+
+  init();
+})();
 </script>
 </body>
 </html>
